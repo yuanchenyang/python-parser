@@ -11,6 +11,8 @@ LINEPARSER = "<([a-zA-Z]*) ([a-zA-Z]*)>"
 BLOCKSTART = "\\$([a-zA-Z]*)\\{"
 ITERVAR = "%([a-zA-Z]*)"
 
+maplist = lambda s, func: list(map(func, s.split()))
+
 def parse(parse_string, glob = globals()):
     bindings = {"NORMAL__MAIN": 1}
     lines = list(filter(lambda x: x != "", parse_string.split("\n")))

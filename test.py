@@ -1,15 +1,18 @@
-from parser import parse
+from parser import parse, maplist
 
-mapint = lambda s: list(map(int, s.split()))
+def solve(*args):
+    print(*args)
 
 parse_string = \
 """
 <int t>
 $t{
-<int n>
-<str s>
-<str p>
->>> print(mapint($s), mapint($p))
+<int s> <int m>
+$m{
+<int x> <int y>
+>>> ($x, $y)
+}
+>>> solve($s, list(%m))
 }
 >>> None
 """
