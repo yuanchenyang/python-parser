@@ -1,8 +1,9 @@
 Python Input Parser
 ===================
 
-This implements a general parsing language to parse input from `stdin`, to be used
-in programming contests. This is intended to be compatible with Python 2.7. 
+This implements a general parsing language to parse input from `stdin`, to be
+used in programming contests. This is intended to be compatible with both Python
+2 and Python 3.
 
 How to use
 ----------
@@ -83,10 +84,9 @@ Types supported by line parser:
 
 |Type           | Name  |
 |---------------|-------|
-|Strings        | str   |
-|Integers       | int   |
-|Long integers  | long  |
-|Floats         | float |
+|String         | str   |
+|Integer        | int   |
+|Float          | float |
 
 ### Block Parser Syntax
 
@@ -97,7 +97,7 @@ followed by `}` on a new line.
 A block parser starts with an initializing integer normal variable. The value of
 the variable is looked up at the start of the execution of the block parser,
 which is the number of times the block can be executed. The block parser then
-binds an iterable variable with the same name as the intializing variable. The
+binds an iterable variable with the same name as the initializing variable. The
 iterable variable points to an iterator, which yields the result of each
 iteration of the block, as defined by the return statement.
 

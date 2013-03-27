@@ -5,16 +5,15 @@ import re
 
 CASTING = {'int': int,
            'float': float,
-           'long': long,
            'str': str}
 
 LINEPARSER = "<([a-zA-Z]*) ([a-zA-Z]*)>"
 BLOCKSTART = "\\$([a-zA-Z]*)\\{"
 ITERVAR = "%([a-zA-Z]*)"
 
-def parser(parse_string):
+def parse(parse_string):
     bindings = {"NORMAL__MAIN": 1}
-    lines = filter(lambda x: x != "", parse_string.split("\n"))
+    lines = list(filter(lambda x: x != "", parse_string.split("\n")))
     lines =  read_blocks(lines, 0)
     parse_block(lines, "NORMAL__MAIN", bindings)
     return list(bindings["ITER__MAIN"]())[0]
@@ -65,7 +64,11 @@ def parse_block(lines, init_var, bindings) :
 
 def parse_line(format_string, bindings):
     variables = re.findall(LINEPARSER, format_string)
-    line = raw_input().split()
+    try:
+        read = raw_input()
+    except NameError:
+        read = input()
+    line = read.split()
     if len(line) != len(variables):
         raise ValueError("Incorrect line parser: " + format_string)
     for i in range(len(line)):
@@ -73,6 +76,6 @@ def parse_line(format_string, bindings):
         varname = variables[i][1]
         try:
             bindings["NORMAL_" + varname] = CASTING[vartype](line[i])
-        except ValueError, e:
+        except ValueError as e:
             raise ValueError("Cannot turn {0} into {1} for variable {2}".format(
                 type(line[i]), vartype, varname))

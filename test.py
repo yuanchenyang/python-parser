@@ -16,4 +16,4 @@ $m{
 
 data = parse(parse_string)
 
-print data
+print(data)
