@@ -1,24 +1,19 @@
 from parser import parse
 
-def solve(d, l):
-    print(d, l)
+mapint = lambda s: list(map(int, s.split()))
 
-if __name__ == '__main__':
-    parse_string = \
+parse_string = \
 """
 <int t>
 $t{
 <int n>
-$n{
-<int d> <int i>
->>> ($d, $i)
+<str s>
+<str p>
+>>> print(mapint($s), mapint($p))
 }
-<int D>
->>> solve($D, list(%n))
-}
->>> list(%t)
+>>> None
 """
-    parse(parse_string, globals())
+parse(parse_string, globals())
 
 
 

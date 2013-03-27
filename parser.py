@@ -72,7 +72,10 @@ def parse_line(format_string, bindings):
         read = raw_input()
     except NameError:
         read = input()
-    line = read.split()
+    if len(variables) == 1:
+        line = [read]
+    else:
+        line = read.split()
     if len(line) != len(variables):
         raise ValueError("Incorrect line parser: {0} cannot parse {1}".format(
             format_string, read))
