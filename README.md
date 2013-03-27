@@ -1,6 +1,5 @@
 Python Input Parser
--------------------
--------------------
+===================
 
 This implements a general parsing language to parse input from `stdin`, to be used
 in programming contests. This is intended to be compatible with Python 2.7. 
@@ -43,8 +42,10 @@ We wish to parse this into the following python data-structure:
 This is how it is done:
 
 ```python
+from parser import parse
 
-parse_string = """
+parse_string = \
+"""
 <int t>
 $t{
 <int n>
@@ -58,7 +59,6 @@ $n{
 """
 
 data = parse(parse_string)
-
 ```
 
 Specification
@@ -67,37 +67,56 @@ Specification
 There are two types of parsers, line parser and block parser. There are also two
 types of variables, normal variables and iterable variables.
 
+### Line Parser Syntax
+
 A line parser will read in one line and try to bind normal variables to the data
-read from the input. If we are trying to bind more than one variable on each
-line, the data must be separated by spaces. Any line that is neither a block
-parser nor a return statement is a line parser.
+read from the input. To bind more than one variable, the data and the line
+parser entries must be separated by spaces.
+
+Each entry in a line parser must have the following form:
+```
+<type varname>
+```
+Where `varname` must be a valid normal variable name.
 
 Types supported by line parser:
-1. Strings: <str a>
-2. Integers: <int a>
-3. Floats: <float a>
 
-Every block parser must start with "$varname{", where "varname" is the name of a
-normal variable. It must end with one return statement, starting with ">>> ",
-followed by "}" on a new line.
+|Type           | Name  |
+|---------------|-------|
+|Strings        | str   |
+|Integers       | int   |
+|Long integers  | long  |
+|Floats         | float |
 
-A block parser starts with an integer initializing variable. The value of the
-variable is looked up and substituted at the start of the execution of the block
-parser. That number is the number of times the block can be executed.
+### Block Parser Syntax
 
-A return statement consists of python code along with normal or iterable
-variables. The return statement is executed during each iteration of the block
-parser, and a block parser binds a iterable variable with the same name as the
-intializing variable after execution.
+Every block parser must start with `$varname{`, where `varname` is the name of
+an integer-valued normal variable. It must end with one return statement,
+followed by `}` on a new line.
 
-All variables are all bound to one single global frame.
+A block parser starts with an initializing integer normal variable. The value of
+the variable is looked up at the start of the execution of the block parser,
+which is the number of times the block can be executed. The block parser then
+binds an iterable variable with the same name as the intializing variable. The
+iterable variable points to an iterator, which yields the result of each
+iteration of the block, as defined by the return statement.
 
-A normal variable starts with a "$", followed by its name, which must be all
+### Return Statement Syntax
+
+A return statement starts with `>>> `, followed by a python expression. The
+result from evaluating the python expression is what each iteration of the block
+should yield. The python expression can use normal and iterable variables, as
+well as any function or variable defined in the global frame of the program.
+
+### Normal Variables
+
+A normal variable starts with a `$`, followed by its name, which must be all
 letters. All normal variables are referentially transparent, but they are
 mutable by executing line parsers.
 
-A iterable variable starts with a "%" followed by its name, which must be all
-letters. Iterable variables are not referentially transparent, and they can be
-used only once in a return statement. During execution, a iterable variable is
-replaced with an iterator generated from its block.
+### Iterable Variables
 
+An iterable variable starts with a `%` followed by its name, which must be all
+letters. Iterable variables are not referentially transparent, and they should
+only be used only once in a return statement. During execution, a iterable
+variable is replaced with an iterator generated from executing its block.
