@@ -72,12 +72,28 @@ read from the input. If we are trying to bind more than one variable on each
 line, the data must be separated by spaces. Any line that is neither a block
 parser nor a return statement is a line parser.
 
+Types supported by line parser:
+1. Strings: <str a>
+2. Integers: <int a>
+3. Floats: <float a>
+
+A block parser starts with an integer initializing variable. The value of the
+variable is looked up and substituted at the start of the execution of the block
+parser. That number is the number of times the block can be executed. Every
+block parser must contain one return statement, denoted by ">>>". A return
+statement consists of python code along with normal or iterable variables. The
+return statement is executed during each iteration of the block parser, and a
+block parser binds a iterable variable with the same name as the intializing
+variable after execution.
+
 All variables are all bound to one single global frame.
 
 A normal variable starts with a "$", followed by its name, which must be all
 letters. All normal variables are referentially transparent, but they are
 mutable by executing line parsers.
 
-A block parser starts with a number or a variable. If it starts with a variable,
-the value of the variable is looked up and substituted. The number is the number
-of times the block can be executed. 
+A iterable variable starts with a "%" followed by its name, which must be all
+letters. Iterable variables are not referentially transparent, and they can be
+used only once in a return statement. During execution, a iterable variable is
+replaced with an iterator generated from its block.
+
