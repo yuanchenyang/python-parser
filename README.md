@@ -82,11 +82,11 @@ Where `varname` must be a valid normal variable name.
 
 Types supported by line parser:
 
-|Type           | Name  |
-|---------------|-------|
-|String         | str   |
-|Integer        | int   |
-|Float          | float |
+|Type           | Name    |
+|---------------|---------|
+|String         | `str`   |
+|Integer        | `int`   |
+|Float          | `float` |
 
 ### Block Parser Syntax
 
