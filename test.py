@@ -1,19 +1,24 @@
 from parser import parse
 
-parse_string = \
+def solve(d, l):
+    print(d, l)
+
+if __name__ == '__main__':
+    parse_string = \
 """
 <int t>
 $t{
-<int m> <int n>
-$m{
-<str s>
->>> bin(int($s, 16))[2:].zfill($n)
+<int n>
+$n{
+<int d> <int i>
+>>> ($d, $i)
 }
->>> list(%m)
+<int D>
+>>> solve($D, list(%n))
 }
 >>> list(%t)
 """
+    parse(parse_string, globals())
 
-data = parse(parse_string)
 
-print(data)
+

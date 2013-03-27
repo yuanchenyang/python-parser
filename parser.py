@@ -11,11 +11,11 @@ LINEPARSER = "<([a-zA-Z]*) ([a-zA-Z]*)>"
 BLOCKSTART = "\\$([a-zA-Z]*)\\{"
 ITERVAR = "%([a-zA-Z]*)"
 
-def parse(parse_string):
+def parse(parse_string, glob = globals()):
     bindings = {"NORMAL__MAIN": 1}
     lines = list(filter(lambda x: x != "", parse_string.split("\n")))
     lines =  read_blocks(lines, 0)
-    parse_block(lines, "NORMAL__MAIN", bindings)
+    parse_block(lines, "NORMAL__MAIN", bindings, glob)
     return list(bindings["ITER__MAIN"]())[0]
     
 def read_blocks(lines, start_index):
@@ -34,7 +34,7 @@ def read_blocks(lines, start_index):
         index += 1
     return nested
     
-def parse_block(lines, init_var, bindings) :
+def parse_block(lines, init_var, bindings, glob) :
     times = bindings[init_var]
     return_statement = lines[-1]
     lines = lines[:-1]
@@ -49,15 +49,19 @@ def parse_block(lines, init_var, bindings) :
     for var in itervars:
         return_statement = return_statement.replace("%" + var,
                                                     "ITER_" + var + "()")
+
+    parsed = []
+    for _ in range(times):
+        for line in lines:
+            if type(line) == tuple: # Parse Block
+                parse_block(line[1], line[0], bindings, glob)
+            else:                   # Parse Line
+                parse_line(line, bindings)            
+        parsed.append(eval(return_statement, glob, bindings))
         
     def block_iter():
-        for _ in range(times):
-            for line in lines:
-                if type(line) == tuple: # Parse Block
-                    parse_block(line[1], line[0], bindings)
-                else:                   # Parse Line
-                    parse_line(line, bindings)            
-            yield eval(return_statement, globals(), bindings)
+        for result in parsed:
+            yield result
 
     iter_var = init_var.replace("NORMAL_", "ITER_")
     bindings[iter_var] = block_iter
@@ -70,7 +74,8 @@ def parse_line(format_string, bindings):
         read = input()
     line = read.split()
     if len(line) != len(variables):
-        raise ValueError("Incorrect line parser: " + format_string)
+        raise ValueError("Incorrect line parser: {0} cannot parse {1}".format(
+            format_string, read))
     for i in range(len(line)):
         vartype = variables[i][0]
         varname = variables[i][1]

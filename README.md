@@ -9,7 +9,11 @@ How to use
 ----------
 
 To parse input, call the function: `parse(parse_string)`. This returns a data
-structure as defined in `parse_string`.
+structure as defined in `parse_string`. If `parse` is imported from the module
+and the `parse_string` contains a user-defined function, call
+`parse(parse_string, globals())`. Every parse string must end with a return
+statement (think of it as being enclosed in a outer block that is always
+executed once).
 
 Example
 -------
@@ -99,7 +103,8 @@ the variable is looked up at the start of the execution of the block parser,
 which is the number of times the block can be executed. The block parser then
 binds an iterable variable with the same name as the initializing variable. The
 iterable variable points to an iterator, which yields the result of each
-iteration of the block, as defined by the return statement.
+iteration of the block, as defined by the return statement. However, each block
+is not lazily evaluated.
 
 ### Return Statement Syntax
 
@@ -111,12 +116,10 @@ well as any function or variable defined in the global frame of the program.
 ### Normal Variables
 
 A normal variable starts with a `$`, followed by its name, which must be all
-letters. All normal variables are referentially transparent, but they are
-mutable by executing line parsers.
+letters. All normal variables are mutable by executing line parsers.
 
 ### Iterable Variables
 
 An iterable variable starts with a `%` followed by its name, which must be all
-letters. Iterable variables are not referentially transparent, and they should
-only be used only once in a return statement. During execution, a iterable
-variable is replaced with an iterator generated from executing its block.
+letters. During execution, a iterable variable is replaced with an iterator
+generated from executing its block.
