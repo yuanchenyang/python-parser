@@ -77,14 +77,18 @@ Types supported by line parser:
 2. Integers: <int a>
 3. Floats: <float a>
 
+Every block parser must start with "$varname{", where "varname" is the name of a
+normal variable. It must end with one return statement, starting with ">>> ",
+followed by "}" on a new line.
+
 A block parser starts with an integer initializing variable. The value of the
 variable is looked up and substituted at the start of the execution of the block
-parser. That number is the number of times the block can be executed. Every
-block parser must contain one return statement, denoted by ">>>". A return
-statement consists of python code along with normal or iterable variables. The
-return statement is executed during each iteration of the block parser, and a
-block parser binds a iterable variable with the same name as the intializing
-variable after execution.
+parser. That number is the number of times the block can be executed.
+
+A return statement consists of python code along with normal or iterable
+variables. The return statement is executed during each iteration of the block
+parser, and a block parser binds a iterable variable with the same name as the
+intializing variable after execution.
 
 All variables are all bound to one single global frame.
 
