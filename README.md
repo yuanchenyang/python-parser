@@ -84,13 +84,18 @@ Each entry in a line parser must have the following form:
 ```
 Where `varname` must be a valid normal variable name.
 
-Types supported by line parser:
+`type` is a function that converts a string into a certain type. Functions
+supported by line parser are:
 
-|Type           | Name    |
-|---------------|---------|
-|String         | `str`   |
-|Integer        | `int`   |
-|Float          | `float` |
+| Name       | Converted to                               |
+|------------|--------------------------------------------| 
+| `str`      | String                                     |
+| `int`      | Integer                                    | 
+| `float`    | Float                                      |
+| `mapint`   | List of integers delineated by whitespace  |
+| `mapfloat` | List of floats delineated by whitespace    |
+| `mapstr`   | List of strings delineated by whitespace   |
+
 
 ### Block Parser Syntax
 

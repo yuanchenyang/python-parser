@@ -1,4 +1,4 @@
-from parser import parse, maplist
+from parser import parse
 
 def solve(*args):
     print(*args)
@@ -7,12 +7,12 @@ parse_string = \
 """
 <int t>
 $t{
-<int s> <int m>
-$m{
-<int x> <int y>
->>> ($x, $y)
+<int n>
+$n{
+<int a> <int b> <int c>
+>>> {'a':$a, 'b': $b, 'c':$c}
 }
->>> solve($s, list(%m))
+>>> solve(list(%n))
 }
 >>> None
 """

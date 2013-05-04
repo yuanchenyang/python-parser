@@ -3,15 +3,16 @@
 
 import re
 
-CASTING = {'int': int,
-           'float': float,
-           'str': str}
+maplist = lambda func, s: list(map(func, s.split()))
+mapint = lambda s: maplist(int, s)
+mapfloat = lambda s: maplist(float, s)
+mapstr = lambda s: maplist(str, s)
+
+TYPES = ['int', 'float', 'str', 'mapint', 'mapfloat', 'mapstr']
 
 LINEPARSER = "<([a-zA-Z]*) ([a-zA-Z]*)>"
 BLOCKSTART = "\\$([a-zA-Z]*)\\{"
 ITERVAR = "%([a-zA-Z]*)"
-
-maplist = lambda s, func: list(map(func, s.split()))
 
 def parse(parse_string, glob = globals()):
     bindings = {"NORMAL__MAIN": 1}
@@ -85,7 +86,7 @@ def parse_line(format_string, bindings):
         vartype = variables[i][0]
         varname = variables[i][1]
         try:
-            bindings["NORMAL_" + varname] = CASTING[vartype](line[i])
+            bindings["NORMAL_" + varname] = eval(vartype + "(line[i])")
         except ValueError as e:
             raise ValueError("Cannot turn {0} into {1} for variable {2}".format(
                 type(line[i]), vartype, varname))
