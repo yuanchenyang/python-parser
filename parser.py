@@ -8,8 +8,6 @@ mapint = lambda s: maplist(int, s)
 mapfloat = lambda s: maplist(float, s)
 mapstr = lambda s: maplist(str, s)
 
-TYPES = ['int', 'float', 'str', 'mapint', 'mapfloat', 'mapstr']
-
 LINEPARSER = "<([a-zA-Z]*) ([a-zA-Z]*)>"
 BLOCKSTART = "\\$([a-zA-Z]*)\\{"
 ITERVAR = "%([a-zA-Z]*)"
@@ -20,7 +18,7 @@ def parse(parse_string, glob = globals()):
     lines =  read_blocks(lines, 0)
     parse_block(lines, "NORMAL__MAIN", bindings, glob)
     return list(bindings["ITER__MAIN"]())[0]
-    
+
 def read_blocks(lines, start_index):
     nested = []
     index = start_index
@@ -36,7 +34,7 @@ def read_blocks(lines, start_index):
             nested.append(lines[index])
         index += 1
     return nested
-    
+
 def parse_block(lines, init_var, bindings, glob) :
     times = bindings[init_var]
     return_statement = lines[-1]
@@ -59,9 +57,9 @@ def parse_block(lines, init_var, bindings, glob) :
             if type(line) == tuple: # Parse Block
                 parse_block(line[1], line[0], bindings, glob)
             else:                   # Parse Line
-                parse_line(line, bindings)            
+                parse_line(line, bindings)
         parsed.append(eval(return_statement, glob, bindings))
-        
+
     def block_iter():
         for result in parsed:
             yield result
