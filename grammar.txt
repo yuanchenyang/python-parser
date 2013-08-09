@@ -1,0 +1,20 @@
+/*
+This is a grammar specification for the railroad diagram generator at http://railroad.my28msec.com/
+*/
+
+parse_string ::= ( parser )? return_statement
+
+parser ::= (line_parser | block_parser) '\n'
+
+line_parser ::= parse_element+
+
+block_parser ::= '$' varname '{' '\n' parser return_statement '\n' '}'
+
+parse_element ::= '<' ('str' | 'int' | 'float' | 'mapint' | 'mapfloat' | 'mapstr' |
+                       python_function_name)
+                      varname
+                  '>'
+
+return_statement ::= '>>> ' python_expression
+
+varname ::= [a-zA-Z]+
