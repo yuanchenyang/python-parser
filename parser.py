@@ -8,7 +8,7 @@ mapint = lambda s: maplist(int, s)
 mapfloat = lambda s: maplist(float, s)
 mapstr = lambda s: maplist(str, s)
 
-LINEPARSER = "<([a-zA-Z]*) ([a-zA-Z]*)>"
+LINEPARSER = "<([a-zA-Z_][a-zA-Z0-9_]*) ([a-zA-Z]+)>"
 BLOCKSTART = "\\$([a-zA-Z]*)\\{"
 ITERVAR = "%([a-zA-Z]*)"
 
