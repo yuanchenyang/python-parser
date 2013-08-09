@@ -66,6 +66,86 @@ $n{
 data = parse(parse_string)
 ```
 
+Syntax Diagram
+--------------
+
+      <p style="font-size: 14px; font-weight:bold"><a name="parse_string">parse_string:</a></p><img border="0" height="52" src="diagram/parse_string.png" usemap="#parse_string.map" width="310"><map name="parse_string.map">
+         <area coords="49,1,109,33" href="#parser" shape="rect" title="parser">
+         <area coords="149,1,281,33" href="#return_statement" shape="rect" title="return_statement"></map><p>
+         <div class="ebnf"><pre><a href="#parse_string" title="parse_string">parse_string</a>
+         ::= <a href="#parser" title="parser">parser</a>? <a href="#return_statement" title="return_statement">return_statement</a></pre></div>
+      </p>
+      <p>no references</p><br><p style="font-size: 14px; font-weight:bold"><a name="parser">parser:</a></p><img border="0" height="80" src="diagram/parser.png" usemap="#parser.map" width="254"><map name="parser.map">
+         <area coords="49,1,139,33" href="#line_parser" shape="rect" title="line_parser">
+         <area coords="49,45,149,77" href="#block_parser" shape="rect" title="block_parser"></map><p>
+         <div class="ebnf"><pre><a href="#parser" title="parser">parser</a>   ::= ( <a href="#line_parser" title="line_parser">line_parser</a> | <a href="#block_parser" title="block_parser">block_parser</a> ) '\n'</pre></div>
+      </p>
+      <p>referenced by:
+         <ul>
+            <li><a href="#block_parser" title="block_parser">block_parser</a></li>
+            <li><a href="#parse_string" title="parse_string">parse_string</a></li>
+         </ul>
+      </p><br><p style="font-size: 14px; font-weight:bold"><a name="line_parser">line_parser:</a></p><img border="0" height="52" src="diagram/line_parser.png" usemap="#line_parser.map" width="212"><map name="line_parser.map">
+         <area coords="49,17,163,49" href="#parse_element" shape="rect" title="parse_element"></map><p>
+         <div class="ebnf"><pre><a href="#line_parser" title="line_parser">line_parser</a>
+         ::= <a href="#parse_element" title="parse_element">parse_element</a>+</pre></div>
+      </p>
+      <p>referenced by:
+         <ul>
+            <li><a href="#parser" title="parser">parser</a></li>
+         </ul>
+      </p><br><p style="font-size: 14px; font-weight:bold"><a name="block_parser">block_parser:</a></p><img border="0" height="36" src="diagram/block_parser.png" usemap="#block_parser.map" width="620"><map name="block_parser.map">
+         <area coords="77,1,151,33" href="#varname" shape="rect" title="varname">
+         <area coords="275,1,335,33" href="#parser" shape="rect" title="parser">
+         <area coords="355,1,487,33" href="#return_statement" shape="rect" title="return_statement"></map><p>
+         <div class="ebnf"><pre><a href="#block_parser" title="block_parser">block_parser</a>
+         ::= '$' <a href="#varname" title="varname">varname</a> '{' '\n' <a href="#parser" title="parser">parser</a> <a href="#return_statement" title="return_statement">return_statement</a> '\n' '}'</pre></div>
+      </p>
+      <p>referenced by:
+         <ul>
+            <li><a href="#parser" title="parser">parser</a></li>
+         </ul>
+      </p><br><p style="font-size: 14px; font-weight:bold"><a name="parse_element">parse_element:</a></p><img border="0" height="300" src="diagram/parse_element.png" usemap="#parse_element.map" width="456"><map name="parse_element.map">
+         <area coords="99,265,263,297" href="#python_function_name" shape="rect" title="python_function_name">
+         <area coords="303,1,377,33" href="#varname" shape="rect" title="varname"></map><p>
+         <div class="ebnf"><pre><a href="#parse_element" title="parse_element">parse_element</a>
+         ::= '&lt;' ( 'str' | 'int' | 'float' | 'mapint' | 'mapfloat' | 'mapstr' | <a href="#python_function_name" title="python_function_name">python_function_name</a> ) <a href="#varname" title="varname">varname</a> '&gt;'</pre></div>
+      </p>
+      <p>referenced by:
+         <ul>
+            <li><a href="#line_parser" title="line_parser">line_parser</a></li>
+         </ul>
+      </p><br><p style="font-size: 14px; font-weight:bold"><a name="return_statement">return_statement:</a></p><img border="0" height="36" src="diagram/return_statement.png" usemap="#return_statement.map" width="272"><map name="return_statement.map">
+         <area coords="103,1,243,33" href="#python_expression" shape="rect" title="python_expression"></map><p>
+         <div class="ebnf"><pre><a href="#return_statement" title="return_statement">return_statement</a>
+         ::= '&gt;&gt;&gt; ' <a href="#python_expression" title="python_expression">python_expression</a></pre></div>
+      </p>
+      <p>referenced by:
+         <ul>
+            <li><a href="#block_parser" title="block_parser">block_parser</a></li>
+            <li><a href="#parse_string" title="parse_string">parse_string</a></li>
+         </ul>
+      </p><br><p style="font-size: 14px; font-weight:bold"><a name="varname">varname:</a></p><img border="0" height="96" src="diagram/varname.png" width="198"><p>
+         <div class="ebnf"><pre><a href="#varname" title="varname">varname</a>  ::= [a-zA-Z]+</pre></div>
+      </p>
+      <p>referenced by:
+         <ul>
+            <li><a href="#block_parser" title="block_parser">block_parser</a></li>
+            <li><a href="#parse_element" title="parse_element">parse_element</a></li>
+         </ul>
+      </p><br><hr>
+      <p>
+         <table border="0" class="signature">
+            <tr>
+               <td style="width: 100%">&nbsp;</td>
+               <td valign="top">
+                  <nobr class="signature">... generated by <a class="signature" href="http://railroad.my28msec.com/" name="Railroad-Diagram-Generator" title="http://railroad.my28msec.com/">Railroad Diagram Generator</a></nobr>
+               </td>
+               <td><img border="0" height="16" src="diagram/.png" width="16"></td>
+            </tr>
+         </table>
+      </p>
+
 Specification
 -------------
 
@@ -88,9 +168,9 @@ Where `varname` must be a valid normal variable name.
 supported by line parser are:
 
 | Name       | Converted to                               |
-|------------|--------------------------------------------| 
+|------------|--------------------------------------------|
 | `str`      | String                                     |
-| `int`      | Integer                                    | 
+| `int`      | Integer                                    |
 | `float`    | Float                                      |
 | `mapint`   | List of integers delineated by whitespace  |
 | `mapfloat` | List of floats delineated by whitespace    |
